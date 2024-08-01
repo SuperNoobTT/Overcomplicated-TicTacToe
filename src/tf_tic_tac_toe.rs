@@ -262,17 +262,18 @@ impl Game {
                 return Err("Unrecognised input!");
             }
         });
-        let start: String = Board::input_helper("Would you like to start first? (Y/N)", |input: String| {
-            if ["Y", "N"].contains(&input.as_str()) {Ok(input)} else {Err("Unrecognised input!")}}
-        );
-        self.board.grid = Default::default();
-        if start == "Y".to_string() {
-            self.board.turn = Turns::player();
-        } else {
-            assert_eq!(&start, &"N".to_string()); //Only two cases bc of closure
-            self.board.turn = Turns::cpu();
-        }
+        
         if new_game {
+            let start: String = Board::input_helper("Would you like to start first? (Y/N)", |input: String| {
+                if ["Y", "N"].contains(&input.as_str()) {Ok(input)} else {Err("Unrecognised input!")}}
+            );
+            self.board.grid = Default::default();
+            if start == "Y".to_string() {
+                self.board.turn = Turns::player();
+            } else {
+                assert_eq!(&start, &"N".to_string()); //Only two cases bc of closure
+                self.board.turn = Turns::cpu();
+            }
             self.new_game();
             self.play();
         }
