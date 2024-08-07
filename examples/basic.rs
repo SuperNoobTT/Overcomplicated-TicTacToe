@@ -1,4 +1,4 @@
-use funni::tf_tic_tac_toe::Game;
+use funni::Game;
 
 fn main() {
     let mut game: Game = Game::default();
