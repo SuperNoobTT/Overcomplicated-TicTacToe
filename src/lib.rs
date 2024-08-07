@@ -23,7 +23,7 @@ impl Game {
             GameResult::PlayerWin => self.wins += 1
         }
     }
-    ///The first function called, handles 
+    ///The first function called, handles resetting the grid and choosing the starting player
     pub fn play(&mut self) {
         println!("Your current record is: \nWins: {} \nLosses: {} \nDraws: {}", &self.wins, &self.losses, &self.draws);
         let new_game: bool = input_helper("Would you like to start a new game? (Y/N)", |input: String| {
