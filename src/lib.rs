@@ -14,6 +14,14 @@ pub struct Game {
 }
 
 impl Game {
+    ///The first function called, handles resetting the grid and choosing the starting player
+    pub fn play(&mut self) {
+        //Allow user to customise player icons before the game starts
+        self.board.custom_icon();
+
+        self.check_continue();
+    }
+
     ///Start a new game, and update the scores based on the result of the game
     fn new_game(&mut self) {
         self.board.grid = Default::default();
@@ -25,8 +33,8 @@ impl Game {
             GameResult::PlayerWin => self.wins += 1
         }
     }
-    ///The first function called, handles resetting the grid and choosing the starting player
-    pub fn play(&mut self) {
+
+    fn check_continue(&mut self) {
         println!("Your current record is: \nWins: {} \nLosses: {} \nDraws: {}", &self.wins, &self.losses, &self.draws);
         let new_game: bool = input_helper("Would you like to start a new game? (Y/N)", |input: String| {
             let input: String = input.to_lowercase();
@@ -38,7 +46,7 @@ impl Game {
             }
             Err("Unrecognised input!")
         });
-        
+
         if new_game {
             let start: String = input_helper("Would you like to start first? (Y/N)", |input: String| {
                 match input.to_lowercase().as_str() {
@@ -54,7 +62,7 @@ impl Game {
                 self.board.turn = Turns::Cpu;
             }
             self.new_game();
-            self.play();
+            self.check_continue();
         }
     }
 }

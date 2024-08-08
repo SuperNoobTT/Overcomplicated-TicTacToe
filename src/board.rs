@@ -27,6 +27,11 @@ impl Default for Board {
 
 impl Board {
     pub(crate) fn start(&mut self) -> GameResult {
+        //Start the game with a new turn!
+        self.new_turn()
+    }
+
+    pub(crate) fn custom_icon(&mut self) {
         let user_fn = |input: String| {
             ["player", "cpu"].contains(&input.to_lowercase().as_str())
             .then(|| input.to_lowercase())
@@ -47,7 +52,13 @@ impl Board {
             } else {
                 assert!(input == "y".to_string()); //This should always be true bc of closure check
                 //Get the new unicode icon
-                let icon: char = input_helper("Please enter the icon you would like to use (a single unicode character)", |icon: char| {Ok(icon)});
+                let icon: char = input_helper("Please enter the icon you would like to use (a single unicode character)", |icon: char| {
+                    if icon.is_numeric() {
+                        Err("Digits are reserved for the game, please choose a non-digit unicode character!")
+                    } else {
+                        Ok(icon)
+                    }
+                });
                 //Get the user who will be represented by the icon
                 let user: String = input_helper("Please select whether the icon should be for the cpu or player", user_fn);
                 //Match the user and update icons appropriately
@@ -59,8 +70,6 @@ impl Board {
                 };
             }
         }
-        //Start the game with a new turn!
-        self.new_turn()
     }
 
     fn new_turn(&mut self) -> GameResult {
