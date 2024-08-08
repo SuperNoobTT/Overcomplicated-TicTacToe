@@ -1,5 +1,4 @@
-use std::{io::{stdin, Write}, str::FromStr};
-use crate::grid::{Grid, States};
+use crate::{grid::{Grid, States}, utils::input_helper};
 
 #[derive(Debug, Clone, PartialEq)]
 pub(crate) enum Turns {
@@ -28,6 +27,11 @@ impl Default for Board {
 
 impl Board {
     pub(crate) fn start(&mut self) -> GameResult {
+        //Start the game with a new turn!
+        self.new_turn()
+    }
+
+    pub(crate) fn custom_icon(&mut self) {
         let user_fn = |input: String| {
             ["player", "cpu"].contains(&input.to_lowercase().as_str())
             .then(|| input.to_lowercase())
@@ -48,7 +52,13 @@ impl Board {
             } else {
                 assert!(input == "y".to_string()); //This should always be true bc of closure check
                 //Get the new unicode icon
-                let icon: char = input_helper("Please enter the icon you would like to use (a single unicode character)", |icon: char| {Ok(icon)});
+                let icon: char = input_helper("Please enter the icon you would like to use (a single unicode character)", |icon: char| {
+                    if icon.is_numeric() {
+                        Err("Digits are reserved for the game, please choose a non-digit unicode character!")
+                    } else {
+                        Ok(icon)
+                    }
+                });
                 //Get the user who will be represented by the icon
                 let user: String = input_helper("Please select whether the icon should be for the cpu or player", user_fn);
                 //Match the user and update icons appropriately
@@ -60,8 +70,6 @@ impl Board {
                 };
             }
         }
-        //Start the game with a new turn!
-        self.new_turn()
     }
 
     fn new_turn(&mut self) -> GameResult {
@@ -186,28 +194,3 @@ pub(crate) enum GameResult {
     CPUWin,
     Draw
 }
-
-///What
-/// Lol this is pretty poorly written but it works :L
-/// Used to get inputs, do some logic, and print error statements!
-pub(crate) fn input_helper<IN, OUT, F>(request: &str, mut logic: F) -> OUT 
-    where 
-        F: FnMut(IN) -> Result<OUT, &'static str>,
-        IN: FromStr
-    {
-        loop {
-            let mut input: String = String::new();
-            println!("{}", request);
-            std::io::stdout().flush().expect("Failed to flush :thonk:");
-            stdin().read_line(&mut input).expect("Failed to read line, maybe too long?");
-            let input = input.trim_end();
-            if let Ok(num) = input.parse() {
-                match logic(num) {
-                    Ok(result) => return result,
-                    Err(msg) => eprintln!("{msg}")
-                }
-            } else {
-                eprintln!("Could not parse your input, please ensure you've entered a valid input");
-            }
-        }
-    }
