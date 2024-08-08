@@ -1,6 +1,8 @@
 mod board;
+pub(crate) mod utils;
+use utils::input_helper;
 pub(crate) mod grid;
-use board::{Board, GameResult, Turns, input_helper};
+use board::{Board, GameResult, Turns};
 
 ///Literally what it says lol, this handles the game in its entirety
 #[derive(PartialEq, Clone, Debug, Default)]
