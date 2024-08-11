@@ -3,6 +3,7 @@ pub(crate) mod utils;
 use utils::input_helper;
 pub(crate) mod grid;
 use board::{Board, GameResult, Turns};
+use eframe::egui::*;
 
 ///Literally what it says lol, this handles the game in its entirety
 #[derive(PartialEq, Clone, Debug, Default)]
@@ -11,6 +12,12 @@ pub struct Game {
     pub losses: u32,
     pub draws: u32,
     board: Board
+}
+
+impl eframe::App for Game {
+    fn update(&mut self, ctx: &Context, frame: &mut eframe::Frame) {
+        todo!();
+    }
 }
 
 impl Game {
