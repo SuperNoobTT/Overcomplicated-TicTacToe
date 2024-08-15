@@ -4,5 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-eframe = "0.28.1"
-unicode-width = "0.1.13"
+bevy = "0.14.1"
+bevy_egui = "0.28.0"
+
+
