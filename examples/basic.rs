@@ -1,6 +1,6 @@
-use funni::Game;
+use funni::*;
 
 fn main() {
-    let mut game: Game = Game::default();
-    game.play();
+    play();
 }
+
